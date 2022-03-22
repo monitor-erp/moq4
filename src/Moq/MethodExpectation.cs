@@ -26,7 +26,7 @@ namespace Moq
 	/// </summary>
 	internal sealed class MethodExpectation : Expectation
 	{
-		public static MethodExpectation CreateFrom(Invocation invocation)
+		public static MethodExpectation CreateFrom(IInvocation invocation)
 		{
 			var method = invocation.Method;
 
@@ -120,7 +120,7 @@ namespace Moq
 			arguments = this.Arguments;
 		}
 
-		public override bool IsMatch(Invocation invocation)
+		public override bool IsMatch(IInvocation invocation)
 		{
 			if (invocation.Method != this.Method && !this.IsOverride(invocation))
 			{
@@ -140,7 +140,7 @@ namespace Moq
 			return true;
 		}
 
-		public override void SetupEvaluatedSuccessfully(Invocation invocation)
+		public override void SetupEvaluatedSuccessfully(IInvocation invocation)
 		{
 			var arguments = invocation.Arguments;
 			var parameterTypes = invocation.Method.GetParameterTypes();
@@ -150,7 +150,7 @@ namespace Moq
 			}
 		}
 
-		private bool IsOverride(Invocation invocation)
+		private bool IsOverride(IInvocation invocation)
 		{
 			Debug.Assert(invocation.Method != this.Method);
 

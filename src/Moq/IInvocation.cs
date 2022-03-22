@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Moq.Async;
 
 namespace Moq
 {
@@ -20,7 +21,7 @@ namespace Moq
 		/// <summary>
 		/// Gets the arguments of the invocation.
 		/// </summary>
-		IReadOnlyList<object> Arguments { get; }
+		object[] Arguments { get; }
 
 		/// <summary>
 		///   Gets the setup that matched this invocation (or <see langword="null"/> if there was no matching setup).
@@ -35,11 +36,26 @@ namespace Moq
 		/// <summary>
 		/// The value being returned for a non-void method if no exception was thrown.
 		/// </summary>
-		object ReturnValue { get; }
+		object ReturnValue { get; set; }
 
 		/// <summary>
 		/// Optional exception if the method invocation results in an exception being thrown.
 		/// </summary>
-		Exception Exception { get; }
+		Exception Exception { get; set; }
+
+		///
+		Type ProxyType { get; }
+
+		///
+		MethodInfo MethodImplementation { get; }
+
+		/// 
+		void MarkAsMatchedBy(ISetup setup);
+
+		///
+		void ConvertResultToAwaitable(IAwaitableFactory awaitableFactory);
+
+		///
+		object CallBase();
 	}
 }

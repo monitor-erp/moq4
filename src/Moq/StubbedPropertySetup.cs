@@ -41,7 +41,7 @@ namespace Moq
 			}
 		}
 
-		protected override void ExecuteCore(Invocation invocation)
+		protected override void ExecuteCore(IInvocation invocation)
 		{
 			if (invocation.Method.ReturnType == typeof(void))
 			{
@@ -98,7 +98,7 @@ namespace Moq
 				return unchecked((this.getter?.GetHashCode() ?? 0) + 103 * (this.setter?.GetHashCode() ?? 0));
 			}
 
-			public override bool IsMatch(Invocation invocation)
+			public override bool IsMatch(IInvocation invocation)
 			{
 				var method = invocation.Method;
 				return method == this.getter || method == this.setter;

@@ -128,7 +128,7 @@ namespace Moq
 				this.underlying = underlying;
 			}
 
-			protected internal override object CallBase()
+			public override object CallBase()
 			{
 				Debug.Assert(this.underlying != null);
 
@@ -257,7 +257,7 @@ namespace Moq
 			//    unfortunately that doesn't work. `DeclaredOnly` does not have the desired effect.
 			//
 			//  * We could get a function pointer via `method.MethodHandle.GetFunctionPointer()`,
-			//    then construct a delegate for it (see ECMA-335 §II.14.4). This does not work
+			//    then construct a delegate for it (see ECMA-335 ï¿½II.14.4). This does not work
 			//    because the delegate signature would have to have a matching parameter list,
 			//    not just an untyped `object[]`. It also doesn't work because we don't always have
 			//    a suitable delegate type ready (e.g. when a method has by-ref parameters).

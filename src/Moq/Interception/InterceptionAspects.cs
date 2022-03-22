@@ -12,7 +12,7 @@ namespace Moq
 {
 	internal static class HandleWellKnownMethods
 	{
-		private static Dictionary<string, Func<Invocation, Mock, bool>> specialMethods = new Dictionary<string, Func<Invocation, Mock, bool>>()
+		private static Dictionary<string, Func<IInvocation, Mock, bool>> specialMethods = new Dictionary<string, Func<IInvocation, Mock, bool>>()
 		{
 			["Equals"] = HandleEquals,
 			["GetHashCode"] = HandleGetHashCode,
@@ -20,13 +20,13 @@ namespace Moq
 			["ToString"] = HandleToString,
 		};
 
-		public static bool Handle(Invocation invocation, Mock mock)
+		public static bool Handle(IInvocation invocation, Mock mock)
 		{
 			return specialMethods.TryGetValue(invocation.Method.Name, out var handler)
 				&& handler.Invoke(invocation, mock);
 		}
 
-		private static bool HandleEquals(Invocation invocation, Mock mock)
+		private static bool HandleEquals(IInvocation invocation, Mock mock)
 		{
 			if (IsObjectMethodWithoutSetup(invocation, mock))
 			{
@@ -39,7 +39,7 @@ namespace Moq
 			}
 		}
 
-		private static bool HandleGetHashCode(Invocation invocation, Mock mock)
+		private static bool HandleGetHashCode(IInvocation invocation, Mock mock)
 		{
 			if (IsObjectMethodWithoutSetup(invocation, mock))
 			{
@@ -52,7 +52,7 @@ namespace Moq
 			}
 		}
 
-		private static bool HandleToString(Invocation invocation, Mock mock)
+		private static bool HandleToString(IInvocation invocation, Mock mock)
 		{
 			if (IsObjectMethodWithoutSetup(invocation, mock))
 			{
@@ -65,7 +65,7 @@ namespace Moq
 			}
 		}
 
-		private static bool HandleMockGetter(Invocation invocation, Mock mock)
+		private static bool HandleMockGetter(IInvocation invocation, Mock mock)
 		{
 			if (typeof(IMocked).IsAssignableFrom(invocation.Method.DeclaringType))
 			{
@@ -78,7 +78,7 @@ namespace Moq
 			}
 		}
 
-		private static bool IsObjectMethodWithoutSetup(Invocation invocation, Mock mock)
+		private static bool IsObjectMethodWithoutSetup(IInvocation invocation, Mock mock)
 		{
 			return invocation.Method.DeclaringType == typeof(object)
 			    && mock.MutableSetups.FindLast(setup => setup.Matches(invocation)) == null;
@@ -87,7 +87,7 @@ namespace Moq
 
 	internal static class FindAndExecuteMatchingSetup
 	{
-		public static bool Handle(Invocation invocation, Mock mock)
+		public static bool Handle(IInvocation invocation, Mock mock)
 		{
 			var matchingSetup = mock.MutableSetups.FindLast(setup => setup.Matches(invocation));
 			if (matchingSetup != null)
@@ -104,7 +104,7 @@ namespace Moq
 
 	internal static class HandleEventSubscription
 	{
-		public static bool Handle(Invocation invocation, Mock mock)
+		public static bool Handle(IInvocation invocation, Mock mock)
 		{
 			const BindingFlags bindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
 
@@ -158,7 +158,7 @@ namespace Moq
 
 	internal static class RecordInvocation
 	{
-		public static void Handle(Invocation invocation, Mock mock)
+		public static void Handle(IInvocation invocation, Mock mock)
 		{
 			// Save to support Verify[expression] pattern.
 			mock.MutableInvocations.Add(invocation);
@@ -167,7 +167,7 @@ namespace Moq
 
 	internal static class Return
 	{
-		public static void Handle(Invocation invocation, Mock mock)
+		public static void Handle(IInvocation invocation, Mock mock)
 		{
 			new ReturnBaseOrDefaultValue(mock).Execute(invocation);
 		}
@@ -175,7 +175,7 @@ namespace Moq
 
 	internal static class FailForStrictMock
 	{
-		public static void Handle(Invocation invocation, Mock mock)
+		public static void Handle(IInvocation invocation, Mock mock)
 		{
 			if (mock.Behavior == MockBehavior.Strict)
 			{

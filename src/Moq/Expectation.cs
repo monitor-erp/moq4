@@ -31,9 +31,9 @@ namespace Moq
 
 		public abstract override int GetHashCode();
 
-		public abstract bool IsMatch(Invocation invocation);
+		public abstract bool IsMatch(IInvocation invocation);
 
-		public virtual void SetupEvaluatedSuccessfully(Invocation invocation)
+		public virtual void SetupEvaluatedSuccessfully(IInvocation invocation)
 		{
 		}
 

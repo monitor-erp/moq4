@@ -17,7 +17,7 @@ namespace Moq.Behaviors
 			this.exceptionFactory = exceptionFactory;
 		}
 
-		public override void Execute(Invocation invocation)
+		public override void Execute(IInvocation invocation)
 		{
 			throw this.exceptionFactory.Invoke(invocation);
 		}

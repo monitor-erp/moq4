@@ -33,7 +33,7 @@ namespace Moq
 			}
 		}
 
-		protected override void ExecuteCore(Invocation invocation)
+		protected override void ExecuteCore(IInvocation invocation)
 		{
 			invocation.ReturnValue = this.returnValue;
 		}

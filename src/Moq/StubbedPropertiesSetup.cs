@@ -46,7 +46,7 @@ namespace Moq
 			this.values[propertyName] = value;
 		}
 
-		protected override void ExecuteCore(Invocation invocation)
+		protected override void ExecuteCore(IInvocation invocation)
 		{
 			if (invocation.Method.ReturnType == typeof(void))
 			{
@@ -98,7 +98,7 @@ namespace Moq
 				return typeof(PropertyAccessorExpectation).GetHashCode();
 			}
 
-			public override bool IsMatch(Invocation invocation)
+			public override bool IsMatch(IInvocation invocation)
 			{
 				return invocation.Method.IsPropertyAccessor();
 			}
