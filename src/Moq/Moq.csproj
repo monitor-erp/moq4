@@ -40,6 +40,7 @@
 		<PackageProjectUrl>https://github.com/moq/moq4</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/moq/moq4</RepositoryUrl>
 		<IncludeSymbols>false</IncludeSymbols>
+		<SignAssembly>false</SignAssembly>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -121,14 +122,13 @@
 		<None Include="$([MSBuild]::GetDirectoryNameOfFileAbove($(MSBuildThisFileDirectory), moq-icon.png))\moq-icon.png" Pack="true" PackagePath="moq.png" Visible="False" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="ProxyFactories\Cecil\" />
+	</ItemGroup>
+
 	<Target Name="Test" />
 
-	<Target Name="UpdatePackageMetadata"
-          BeforeTargets="PrepareForBuild;GetAssemblyVersion;GenerateNuspec;Pack"
-          DependsOnTargets="InitializeSourceControlInformation"
-          Condition="'$(SourceControlInformationFeatureSupported)' And
-                     '$(RepositoryUrl)' != '' And 
-                     '$(SourceRevisionId)' != ''">
+	<Target Name="UpdatePackageMetadata" BeforeTargets="PrepareForBuild;GetAssemblyVersion;GenerateNuspec;Pack" DependsOnTargets="InitializeSourceControlInformation" Condition="'$(SourceControlInformationFeatureSupported)' And&#xD;&#xA;                     '$(RepositoryUrl)' != '' And &#xD;&#xA;                     '$(SourceRevisionId)' != ''">
 		<PropertyGroup>
 			<Description>$(Description)
 

@@ -12,7 +12,7 @@ namespace Moq
 		/// <summary>
 		/// Gets the global <see cref="ProxyFactory"/> instance used by Moq.
 		/// </summary>
-		public static ProxyFactory Instance { get; } = new CastleProxyFactory();
+		public static ProxyFactory Instance { get; set; } = new CastleProxyFactory();
 
 		///
 		public abstract object CreateProxy(Type mockType, IInterceptor interceptor, Type[] interfaces, object[] arguments);
