@@ -116,9 +116,9 @@ namespace Moq
 			this.matchingSetup = setup;
 		}
 
-		internal void MarkAsVerified() => this.verified = true;
+		public void MarkAsVerified() => this.verified = true;
 
-		internal void MarkAsVerifiedIfMatchedBy(Func<ISetup, bool> predicate)
+		public void MarkAsVerifiedIfMatchedBy(Func<ISetup, bool> predicate)
 		{
 			if (this.matchingSetup != null && predicate(this.matchingSetup))
 			{

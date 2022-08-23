@@ -57,5 +57,11 @@ namespace Moq
 
 		///
 		object CallBase();
+
+		///
+		void MarkAsVerified();
+
+		///
+		void MarkAsVerifiedIfMatchedBy(Func<ISetup, bool> predicate);
 	}
 }

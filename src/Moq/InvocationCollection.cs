@@ -82,16 +82,16 @@ namespace Moq
 			}
 		}
 
-		public Invocation[] ToArray()
+		public IInvocation[] ToArray()
 		{
 			lock (this.invocationsLock)
 			{
 				if (this.count == 0)
 				{
-					return new Invocation[0];
+					return new IInvocation[0];
 				}
 
-				var result = new Invocation[this.count];
+				var result = new IInvocation[this.count];
 
 				Array.Copy(this.invocations, result, this.count);
 
