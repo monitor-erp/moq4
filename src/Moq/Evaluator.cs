@@ -121,7 +121,13 @@ namespace Moq
 
 						if (canBeEvaluated)
 						{
-							this.candidates.Add(expression);
+							// A byref-like value (e.g. the `ReadOnlySpan<T>` that C# 14 first-class span conversions
+							// introduce for `array.Contains(x)`) cannot be boxed into a constant, so it must stay in
+							// the tree. Its operands, and a parent returning an ordinary type, can still be evaluated.
+							if (!IsByRefLike(expression.Type))
+							{
+								this.candidates.Add(expression);
+							}
 						}
 						else
 						{
@@ -133,6 +139,20 @@ namespace Moq
 				}
 
 				return expression;
+			}
+
+			private static bool IsByRefLike(Type type)
+			{
+				// `Type.IsByRefLike` is unavailable on net45 / netstandard2.0, so look for the attribute the compiler emits.
+				foreach (var attribute in type.GetCustomAttributes(inherit: false))
+				{
+					if (attribute.GetType().FullName == "System.Runtime.CompilerServices.IsByRefLikeAttribute")
+					{
+						return true;
+					}
+				}
+
+				return false;
 			}
 		}
 	}
